@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+/*
+ * Remove Tailwind's default palette so only our tokens exist as colour
+ * utilities. `bg-red-500` won't compile; `bg-surface` will. This keeps
+ * invented colours out of the codebase (see CLAUDE.md, Design).
+ */
+@theme {
+  --color-*: initial;
+}
+
+/*
+ * Expose tokens as Tailwind utilities. `inline` makes utilities reference
+ * the variable itself, e.g. `background-color: var(--surface)`, so a
+ * theme switch updates them at runtime instead of baking in values.
+ */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-link: var(--link);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-focus: var(--focus-ring-color);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+@layer base {
+  body {
+    background-color: var(--surface);
+    color: var(--text);
+    font-family: var(--font-sans);
+  }
+
+  /*
+   * One visible focus style everywhere (WCAG 2.4.7, 2.4.11 in 2.2).
+   * :focus-visible shows it for keyboard users without flashing on
+   * mouse clicks. Outline, not box-shadow, so it survives forced-colors
+   * (Windows High Contrast) mode.
+   */
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  /*
+   * Honour reduced motion globally. Components can still opt into
+   * motion with Tailwind's `motion-safe:` variant.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
