@@ -89,5 +89,17 @@ Each entry: what we chose, why, what we gave up, and what we considered instead.
 **Decision:** Docker Compose Postgres locally; a Postgres service container in GitHub Actions. Integration tests truncate tables between runs.
 **Why:** Mocks hide exactly the bugs we care about: constraints, transactions, scoping. Docker is also an industry-standard skill worth learning here.
 
+## 016 · Pinned toolchain: TypeScript 6.0, ESLint 9, Node 24 LTS
+**Date:** 2026-10-10
+**Decision:** TypeScript 6.0.3 instead of 7.0, and ESLint 9 instead of 10. Node is pinned in `.tool-versions` (asdf locally, `setup-node` in CI). pnpm is pinned via `packageManager` and run through Corepack.
+**Why:** `typescript-eslint` supports TS `<6.1`, and `eslint-plugin-jsx-a11y` supports ESLint `<=9`. Accessibility linting is non-negotiable, so the linters set the ceiling.
+**Revisit:** when those plugins add support.
+
+## 017 · Supply-chain guard: minimum release age
+**Date:** 2026-10-10
+**Decision:** `minimumReleaseAge: 7 days` in `pnpm-workspace.yaml`, so pnpm refuses package versions younger than a week. Exact versions in `package.json`, and install scripts allow-listed (`onlyBuiltDependencies`).
+**Why:** The 2025 npm worm attacks (e.g. "Shai-Hulud") spread through freshly published malicious versions. These were usually pulled within days.
+**Tradeoff:** Security patches land a week late unless explicitly exempted (`minimumReleaseAgeExclude`). That's why we're on Next 16.3.8 rather than 16.4.0, which is four days old.
+
 ## Open questions
 - **Status control in the table (owner: Zara).** On Windows Chromium, arrow keys on a closed `<select>` fire `change` on every keypress. If a change saves immediately, keyboard users would create unintended history rows. The options are an explicit per-row submit, or a "change status" dialog that also collects the date, round and note.

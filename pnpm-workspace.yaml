@@ -1,0 +1,14 @@
+# pnpm settings for this repo (pnpm reads them from here even without a monorepo).
+
+# Refuse to install any package version published less than 7 days ago.
+# Most compromised npm releases are caught and pulled within days, so this
+# keeps us out of that window. See DECISIONS.md 017.
+minimumReleaseAge: 10080
+
+# Write exact versions to package.json; the lockfile is the source of truth.
+saveExact: true
+
+# Only these packages may run install scripts.
+onlyBuiltDependencies:
+  - sharp
+  - unrs-resolver
