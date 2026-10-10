@@ -5,18 +5,21 @@ full stack and accessibility skills. Accessibility quality matters as much as
 features. Full brief: [Brief.md](Brief.md). Decisions log: [DECISIONS.md](DECISIONS.md).
 
 ## Current slice: 1
+
 Auth + CRUD for applications + status tracking + status history, accessible and
 tested. **No AI features yet.** Later slices: LLM job-posting extraction, detail
 page notes, CV/cover letter storage, AI cover letters, company research,
 reminders, stats.
 
 ## Stack
+
 Next.js (App Router) + strict TypeScript · Better Auth (GitHub + Google,
 database sessions) · Neon Postgres (EU) + Drizzle · Zod · Tailwind + CSS Modules ·
 Vitest + Testing Library + vitest-axe · Playwright + @axe-core/playwright ·
 Docker Postgres for local/CI tests · Vercel · pnpm, Node 24 LTS.
 
 ## How we work together (most important section)
+
 Zara is a senior front end / accessibility engineer, newer to backend, auth and
 databases. She wants to write a good share of the code herself.
 
@@ -34,7 +37,9 @@ databases. She wants to write a good share of the code herself.
 - Ask before deciding anything significant.
 
 ## Architecture
+
 Layered, backend logic easy to find:
+
 - `src/server/repositories/` data access only. **Every function takes `userId`
   and filters by it.** This is the authorization boundary, not the proxy.
 - `src/server/services/` business rules, transactions.
@@ -46,6 +51,7 @@ Layered, backend logic easy to find:
 - No TanStack Query for now.
 
 ## Accessibility (non-negotiable)
+
 - WCAG 2.2 AA minimum, fully keyboard operable, axe in CI.
 - Semantic HTML first; ARIA only when needed. Visible focus, skip link, landmarks.
 - Proper labels, error summary + inline errors, focus management after submit.
@@ -53,6 +59,7 @@ Layered, backend logic easy to find:
 - Main view is a **table/list with status control, never drag-and-drop kanban**.
 
 ## Design
+
 - Zara designs in Figma; exports live in `docs/design/`.
 - **Do not invent visual design.** No design yet → ask, or build unstyled semantic markup.
 - Tokens (colour, spacing, type, focus ring) are CSS variables, light + dark,
@@ -60,6 +67,7 @@ Layered, backend logic easy to find:
   nested styles. Both consume the same tokens.
 
 ## Testing
+
 - Zara writes tests, or at least the assertions; she decides what "correct" means.
 - Service layer test-first: Zara writes the failing test, then the implementation.
 - Testing Library queries by role/label (`getByRole`, `getByLabelText`); no test IDs
@@ -70,6 +78,7 @@ Layered, backend logic easy to find:
 - Future AI: mock Anthropic API; test that malformed LLM output is rejected by Zod.
 
 ## Rules
+
 - Strict TypeScript. No secrets in the repo (`.env.example` only).
 - Data is private to the logged-in user. Sign-in is allowlisted to Zara; a seeded
   **read-only demo account** exists for recruiters; writes from it are rejected
@@ -79,4 +88,5 @@ Layered, backend logic easy to find:
 - Not doing: job-site scraping, kanban, multi-user features, TanStack Query.
 
 ## Commands
+
 _Filled in once the project is scaffolded._

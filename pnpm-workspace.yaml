@@ -9,6 +9,5 @@ minimumReleaseAge: 10080
 saveExact: true
 
 # Only these packages may run install scripts.
-onlyBuiltDependencies:
-  - sharp
-  - unrs-resolver
+allowBuilds:
+  unrs-resolver: true
