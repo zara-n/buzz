@@ -89,4 +89,18 @@ Layered, backend logic easy to find:
 
 ## Commands
 
-_Filled in once the project is scaffolded._
+Node from `.tool-versions` (asdf); pnpm via Corepack (`packageManager` field).
+
+- `pnpm dev`: dev server on http://localhost:3000
+- `pnpm build`: production build
+- `pnpm lint`: ESLint (type-aware + jsx-a11y strict)
+- `pnpm typecheck`: route typegen + `tsc --noEmit`
+- `pnpm format` / `pnpm format:check`: Prettier
+
+## Tooling notes
+
+- Package versions are exact. pnpm refuses versions younger than 7 days
+  (`minimumReleaseAge`). Install scripts need approval (`pnpm approve-builds`).
+- Tailwind's default palette is removed: colour utilities exist only for tokens
+  in `src/styles/tokens.css`. In a CSS Module, use `var(--token)` directly.
+- TypeScript 6.0 / ESLint 9 are pinned on purpose (DECISIONS 016).

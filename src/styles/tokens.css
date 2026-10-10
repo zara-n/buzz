@@ -1,0 +1,43 @@
+/*
+ * Design tokens: the single source for colour, type and focus styles.
+ * Tailwind utilities (via @theme in globals.css) and CSS Modules
+ * (via var(--token)) both read from here.
+ *
+ * ⚠️ PLACEHOLDER VALUES. These are CSS system colours, not a design.
+ * They follow the user's light/dark preference and keep browser-default
+ * contrast. Replace them with the Figma token export (docs/design/).
+ * Check every text/background pair for WCAG AA: 4.5:1 for text,
+ * 3:1 for large text, UI components and focus indicators.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* Colour */
+  --surface: Canvas;
+  --surface-raised: Canvas;
+  --text: CanvasText;
+  --text-muted: CanvasText;
+  --border: CanvasText;
+  --link: LinkText;
+  --danger: CanvasText;
+  --success: CanvasText;
+
+  /* Focus ring */
+  --focus-ring-color: CanvasText;
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+
+  /* Type */
+  --font-sans: system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+}
+
+/*
+ * Dark theme overrides go here once the Figma export exists. System
+ * colours already adapt through `color-scheme`, so this is empty for now.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+  }
+}
