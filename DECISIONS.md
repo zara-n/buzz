@@ -119,6 +119,20 @@ Each entry: what we chose, why, what we gave up, and what we considered instead.
 **Why:** The 2025 npm worm attacks (e.g. "Shai-Hulud") spread through freshly published malicious versions. These were usually pulled within days.
 **Tradeoff:** Security patches land a week late unless explicitly exempted (`minimumReleaseAgeExclude`). That's why we're on Next 16.3.8 rather than 16.4.0, which is four days old.
 
+## 018 · Own axe matcher for component tests
+
+**Date:** 2026-10-10
+**Decision:** A ~40-line `toHaveNoAxeViolations` matcher on `axe-core` (`tests/setup/axe-matcher.ts`), with its own tests proving it passes clean markup and fails bad markup.
+**Why:** `vitest-axe` hasn't been updated since early 2025. `jest-axe` pulls in `@types/jest`, which conflicts with Vitest's globals. Writing our own also means we control the failure message.
+**Split:** jsdom has no layout, so `color-contrast` is off in component tests. `region` is also off, because a lone component sits outside the page's landmarks. Playwright runs axe in a real browser with both on (WCAG 2.0–2.2 A/AA tags).
+
+## 019 · Test projects and Playwright scope
+
+**Date:** 2026-10-10
+**Decision:** One Vitest config with two projects: `unit` (jsdom) and `integration` (node, files run one at a time against a shared database). Playwright starts on Chromium only, runs against the production build in CI, and reuses `pnpm dev` locally.
+**Why:** Fast feedback first. Firefox and WebKit roughly triple e2e time, so they're added when keyboard e2e flows exist (#18), where browser differences in Tab order actually matter (Safari skips links on Tab by default).
+**Pattern:** Unfinished skeleton tests call `expect.hasAssertions()`, so they fail loudly instead of passing having checked nothing (`it.todo` is skipped, and an empty test passes).
+
 ## Open questions
 
 - **Status control in the table (owner: Zara).** On Windows Chromium, arrow keys on a closed `<select>` fire `change` on every keypress. If a change saves immediately, keyboard users would create unintended history rows. The options are an explicit per-row submit, or a "change status" dialog that also collects the date, round and note.
