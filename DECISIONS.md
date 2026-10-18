@@ -154,7 +154,6 @@ Each entry: what we chose, why, what we gave up, and what we considered instead.
 **Why not npm yet:** about 30 dev dependencies would mean a steady stream of PRs while slice 1 is being built. The lockfile and the release-age rule already keep installs stable.
 **Revisit:** add the npm ecosystem with the same cooldown once slice 1 ships.
 
-
 ## Open questions
 
 - **Status control in the table (owner: Zara).** On Windows Chromium, arrow keys on a closed `<select>` fire `change` on every keypress. If a change saves immediately, keyboard users would create unintended history rows. The options are an explicit per-row submit, or a "change status" dialog that also collects the date, round and note.

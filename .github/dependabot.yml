@@ -1,0 +1,20 @@
+# Keeps the SHA-pinned actions in .github/workflows up to date (DECISIONS 021).
+# Dependabot opens a PR that bumps the SHA and its `# vX.Y.Z` comment;
+# the PR must pass CI like any other.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # Ignore releases younger than 7 days, matching pnpm's minimumReleaseAge
+    # (DECISIONS 017). A compromised release is usually pulled within days.
+    cooldown:
+      default-days: 7
+    # One PR per week for all actions, not one per action.
+    groups:
+      github-actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
