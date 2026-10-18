@@ -133,6 +133,14 @@ Each entry: what we chose, why, what we gave up, and what we considered instead.
 **Why:** Fast feedback first. Firefox and WebKit roughly triple e2e time, so they're added when keyboard e2e flows exist (#18), where browser differences in Tab order actually matter (Safari skips links on Tab by default).
 **Pattern:** Unfinished skeleton tests call `expect.hasAssertions()`, so they fail loudly instead of passing having checked nothing (`it.todo` is skipped, and an empty test passes).
 
+## 021 · Dependabot for GitHub Actions only
+
+**Date:** 2026-10-18
+**Decision:** Dependabot checks the SHA-pinned actions every Monday and opens one grouped PR. It ignores releases younger than 7 days (`cooldown`). npm packages are not included for now.
+**Why:** SHA pins (DECISIONS 020) are safe because they never change, but they also never pick up security fixes. Dependabot closes that gap, and its PRs still have to pass the required checks.
+**Why not npm yet:** about 30 dev dependencies would mean a steady stream of PRs while slice 1 is being built. The lockfile and the release-age rule already keep installs stable.
+**Revisit:** add the npm ecosystem with the same cooldown once slice 1 ships.
+
 ## Open questions
 
 - **Status control in the table (owner: Zara).** On Windows Chromium, arrow keys on a closed `<select>` fire `change` on every keypress. If a change saves immediately, keyboard users would create unintended history rows. The options are an explicit per-row submit, or a "change status" dialog that also collects the date, round and note.
