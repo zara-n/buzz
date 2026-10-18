@@ -133,6 +133,19 @@ Each entry: what we chose, why, what we gave up, and what we considered instead.
 **Why:** Fast feedback first. Firefox and WebKit roughly triple e2e time, so they're added when keyboard e2e flows exist (#18), where browser differences in Tab order actually matter (Safari skips links on Tab by default).
 **Pattern:** Unfinished skeleton tests call `expect.hasAssertions()`, so they fail loudly instead of passing having checked nothing (`it.todo` is skipped, and an empty test passes).
 
+## 020 · CI: four parallel jobs, actions pinned by SHA
+
+**Date:** 2026-10-18
+**Decision:** GitHub Actions runs four jobs on every PR and on pushes to `main`: _Lint, types, format_, _Unit tests_, _Integration tests_ (with a throwaway `postgres:17` service container) and _E2E and axe_ (against the production build). All four are required checks for merging.
+**Why:**
+
+- Parallel jobs give faster feedback, and the PR shows exactly which kind of check failed.
+- Actions are pinned to commit SHAs, not tags. A tag can be repointed to malicious code: in March 2025 the `tj-actions/changed-files` compromise did exactly that and leaked secrets from thousands of repos. Same reasoning as DECISIONS 017.
+- `permissions: contents: read` means a compromised step can't push code or edit releases.
+- `--frozen-lockfile` fails the install if `package.json` and the lockfile disagree, so CI tests exactly what's committed.
+  **Tradeoff:** SHA pins don't update on their own. They need Dependabot or a manual bump.
+  **Revisit:** match the Postgres major version to the Neon project once it's created (#5).
+
 ## 021 · Dependabot for GitHub Actions only
 
 **Date:** 2026-10-18
@@ -140,6 +153,7 @@ Each entry: what we chose, why, what we gave up, and what we considered instead.
 **Why:** SHA pins (DECISIONS 020) are safe because they never change, but they also never pick up security fixes. Dependabot closes that gap, and its PRs still have to pass the required checks.
 **Why not npm yet:** about 30 dev dependencies would mean a steady stream of PRs while slice 1 is being built. The lockfile and the release-age rule already keep installs stable.
 **Revisit:** add the npm ecosystem with the same cooldown once slice 1 ships.
+
 
 ## Open questions
 
