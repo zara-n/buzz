@@ -15,7 +15,7 @@ reminders, stats.
 
 Next.js (App Router) + strict TypeScript · Better Auth (GitHub + Google,
 database sessions) · Neon Postgres (EU) + Drizzle · Zod · Tailwind + CSS Modules ·
-Vitest + Testing Library + vitest-axe · Playwright + @axe-core/playwright ·
+Vitest + Testing Library + own axe matcher · Playwright + @axe-core/playwright ·
 Docker Postgres for local/CI tests · Vercel · pnpm, Node 24 LTS.
 
 ## How we work together (most important section)
@@ -96,6 +96,10 @@ Node from `.tool-versions` (asdf); pnpm via Corepack (`packageManager` field).
 - `pnpm lint`: ESLint (type-aware + jsx-a11y strict)
 - `pnpm typecheck`: route typegen + `tsc --noEmit`
 - `pnpm format` / `pnpm format:check`: Prettier
+- `pnpm test` / `pnpm test:watch`: unit + component tests (Vitest, jsdom)
+- `pnpm test:int`: integration tests (Vitest, node, real Postgres)
+- `pnpm test:e2e`: Playwright (starts `pnpm dev` locally, prod build in CI)
+- `pnpm test:all`: everything
 
 ## Tooling notes
 
@@ -104,3 +108,8 @@ Node from `.tool-versions` (asdf); pnpm via Corepack (`packageManager` field).
 - Tailwind's default palette is removed: colour utilities exist only for tokens
   in `src/styles/tokens.css`. In a CSS Module, use `var(--token)` directly.
 - TypeScript 6.0 / ESLint 9 are pinned on purpose (DECISIONS 016).
+- Tests: `*.test.ts(x)` next to the code = unit; `*.int.test.ts` = integration;
+  `tests/e2e/*.spec.ts` = Playwright. E2E tests import `test` from
+  `tests/e2e/fixtures.ts` (provides `makeAxeBuilder()`), never from
+  `@playwright/test` directly. Component axe: `await expect(container).toHaveNoAxeViolations()`.
+- Skeleton tests for Zara call `expect.hasAssertions()` so they fail until written.
