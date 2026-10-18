@@ -15,7 +15,7 @@ reminders, stats.
 
 Next.js (App Router) + strict TypeScript · Better Auth (GitHub + Google,
 database sessions) · Neon Postgres (EU) + Drizzle · Zod · Tailwind + CSS Modules ·
-Vitest + Testing Library + vitest-axe · Playwright + @axe-core/playwright ·
+Vitest + Testing Library + own axe matcher · Playwright + @axe-core/playwright ·
 Docker Postgres for local/CI tests · Vercel · pnpm, Node 24 LTS.
 
 ## How we work together (most important section)
